@@ -1,7 +1,9 @@
 package serve
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
+	"strings"
 	passwordmanager "v1/internal"
 )
 
@@ -14,6 +16,14 @@ var pm = passwordmanager.NewPasswordManagerService()
 
 func Serve() {
 	cobra.CheckErr(rootCmd.Execute())
+}
+
+func printRecords(entries []*passwordmanager.PMEntry) {
+	fmt.Printf("%-30s %-20s %-20s\n", "Username", "Password", "Site")
+	fmt.Println(strings.Repeat("-", 70))
+	for _, entry := range entries {
+		fmt.Printf("%-30s %-20s %-20s\n", entry.Username, entry.Password, entry.Site)
+	}
 }
 
 func init() {

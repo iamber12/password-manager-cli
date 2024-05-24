@@ -3,7 +3,6 @@ package serve
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	passwordmanager "v1/internal"
 )
 
 var delCmd = &cobra.Command{
@@ -21,9 +20,8 @@ func handleDelete(cmd *cobra.Command, args []string) {
 		fmt.Println("Username and site must be provided.")
 		return
 	}
-
-	user := &passwordmanager.PMUser{"", username, "", site}
-	err := pm.Delete(user)
+	
+	err := pm.Delete(username, site)
 	if err != nil {
 		fmt.Println(err)
 		return
