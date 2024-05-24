@@ -3,6 +3,7 @@ package serve
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	passwordmanager "v1/internal"
 )
 
 var addCmd = &cobra.Command{
@@ -13,14 +14,27 @@ var addCmd = &cobra.Command{
 }
 
 func handleAdd(cmd *cobra.Command, args []string) {
-	description, _ := cmd.Flags().GetString("description")
 	username, _ := cmd.Flags().GetString("username")
 	password, _ := cmd.Flags().GetString("password")
-
-	if description == "" || username == "" || password == "" {
+	site, _ := cmd.Flags().GetString("site")
+	fmt.Println(username, password, site)
+	if site == "" || username == "" || password == "" {
 		fmt.Println("Description, username, and password must be provided.")
 		return
 	}
 
-	// TODO - logic to handle add in db
+	user := &passwordmanager.PMUser{"", username, password, site}
+	err := pm.Add(user)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("Password saved successfully!")
+}
+
+func init() {
+	addCmd.Flags().StringP("username", "u", "", "Username for the password")
+	addCmd.Flags().StringP("password", "p", "", "Password")
+	addCmd.Flags().StringP("site", "s", "", "Site")
+	rootCmd.AddCommand(addCmd)
 }
