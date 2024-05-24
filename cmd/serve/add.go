@@ -17,7 +17,7 @@ func handleAdd(cmd *cobra.Command, args []string) {
 	username, _ := cmd.Flags().GetString("username")
 	password, _ := cmd.Flags().GetString("password")
 	site, _ := cmd.Flags().GetString("site")
-	fmt.Println(username, password, site)
+
 	if site == "" || username == "" || password == "" {
 		fmt.Println("Description, username, and password must be provided.")
 		return
@@ -27,9 +27,10 @@ func handleAdd(cmd *cobra.Command, args []string) {
 	err := pm.Add(user)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
-	fmt.Println("Password saved successfully!")
+	fmt.Println("Entry saved successfully!")
 }
 
 func init() {
