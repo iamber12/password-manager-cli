@@ -3,6 +3,7 @@ package serve
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 	"strings"
 	passwordmanager "v1/internal"
 )
@@ -15,7 +16,10 @@ var rootCmd = &cobra.Command{
 var pm = passwordmanager.NewPasswordManagerService()
 
 func Serve() {
-	cobra.CheckErr(rootCmd.Execute())
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println("Invalid command. Use add, update, find, delete or list. Available args: -u for username, -p for password, -s for site")
+		os.Exit(1)
+	}
 }
 
 func printRecords(entries []*passwordmanager.PMEntry) {
